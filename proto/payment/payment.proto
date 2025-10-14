@@ -1,0 +1,87 @@
+syntax = "proto3";
+
+package payment;
+
+import "proto/common/common.proto";
+
+option go_package = "github.com/yourusername/kube-ec/proto/payment";
+
+service PaymentService {
+  rpc CreatePayment(CreatePaymentRequest) returns (Payment);
+  rpc GetPayment(GetPaymentRequest) returns (Payment);
+  rpc ProcessPayment(ProcessPaymentRequest) returns (ProcessPaymentResponse);
+  rpc RefundPayment(RefundPaymentRequest) returns (RefundPaymentResponse);
+  rpc GetPaymentStatus(GetPaymentStatusRequest) returns (GetPaymentStatusResponse);
+}
+
+enum PaymentStatus {
+  PAYMENT_STATUS_UNSPECIFIED = 0;
+  PAYMENT_STATUS_PENDING = 1;
+  PAYMENT_STATUS_PROCESSING = 2;
+  PAYMENT_STATUS_COMPLETED = 3;
+  PAYMENT_STATUS_FAILED = 4;
+  PAYMENT_STATUS_REFUNDED = 5;
+}
+
+enum PaymentMethod {
+  PAYMENT_METHOD_UNSPECIFIED = 0;
+  PAYMENT_METHOD_CREDIT_CARD = 1;
+  PAYMENT_METHOD_BANK_TRANSFER = 2;
+  PAYMENT_METHOD_CONVENIENCE_STORE = 3;
+  PAYMENT_METHOD_ELECTRONIC_MONEY = 4;
+}
+
+message Payment {
+  string id = 1;
+  string order_id = 2;
+  string user_id = 3;
+  common.Money amount = 4;
+  PaymentStatus status = 5;
+  PaymentMethod method = 6;
+  string transaction_id = 7;
+  common.Timestamp created_at = 8;
+  common.Timestamp updated_at = 9;
+}
+
+message CreatePaymentRequest {
+  string order_id = 1;
+  string user_id = 2;
+  common.Money amount = 3;
+  PaymentMethod method = 4;
+}
+
+message GetPaymentRequest {
+  string id = 1;
+}
+
+message ProcessPaymentRequest {
+  string payment_id = 1;
+  string payment_token = 2; // 決済トークン（カード情報など）
+}
+
+message ProcessPaymentResponse {
+  bool success = 1;
+  string transaction_id = 2;
+  string message = 3;
+}
+
+message RefundPaymentRequest {
+  string payment_id = 1;
+  common.Money amount = 2; // 部分返金の場合の金額
+  string reason = 3;
+}
+
+message RefundPaymentResponse {
+  bool success = 1;
+  string refund_id = 2;
+  string message = 3;
+}
+
+message GetPaymentStatusRequest {
+  string payment_id = 1;
+}
+
+message GetPaymentStatusResponse {
+  PaymentStatus status = 1;
+  string transaction_id = 2;
+}

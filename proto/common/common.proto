@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package common;
+
+option go_package = "github.com/yourusername/kube-ec/proto/common";
+
+// 共通メッセージ定義
+
+message Money {
+  string currency = 1; // JPY, USD, etc.
+  int64 amount = 2;    // 金額（最小単位、例: 円の場合は円）
+}
+
+message Timestamp {
+  int64 seconds = 1;
+  int32 nanos = 2;
+}
+
+message Address {
+  string postal_code = 1;
+  string prefecture = 2;
+  string city = 3;
+  string address_line1 = 4;
+  string address_line2 = 5;
+  string phone_number = 6;
+}
+
+message Pagination {
+  int32 page = 1;
+  int32 page_size = 2;
+}
+
+message PaginationResponse {
+  int32 total_count = 1;
+  int32 total_pages = 2;
+  int32 current_page = 3;
+}

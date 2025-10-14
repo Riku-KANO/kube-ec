@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package order;
+
+import "proto/common/common.proto";
+
+option go_package = "github.com/yourusername/kube-ec/proto/order";
+
+service OrderService {
+  rpc CreateOrder(CreateOrderRequest) returns (Order);
+  rpc GetOrder(GetOrderRequest) returns (Order);
+  rpc ListOrders(ListOrdersRequest) returns (ListOrdersResponse);
+  rpc UpdateOrderStatus(UpdateOrderStatusRequest) returns (Order);
+  rpc CancelOrder(CancelOrderRequest) returns (Order);
+}
+
+enum OrderStatus {
+  ORDER_STATUS_UNSPECIFIED = 0;
+  ORDER_STATUS_PENDING = 1;
+  ORDER_STATUS_CONFIRMED = 2;
+  ORDER_STATUS_PROCESSING = 3;
+  ORDER_STATUS_SHIPPED = 4;
+  ORDER_STATUS_DELIVERED = 5;
+  ORDER_STATUS_CANCELLED = 6;
+}
+
+message OrderItem {
+  string product_id = 1;
+  string product_name = 2;
+  int32 quantity = 3;
+  common.Money unit_price = 4;
+  common.Money subtotal = 5;
+}
+
+message Order {
+  string id = 1;
+  string user_id = 2;
+  repeated OrderItem items = 3;
+  common.Money total_amount = 4;
+  OrderStatus status = 5;
+  common.Address shipping_address = 6;
+  string payment_id = 7;
+  common.Timestamp created_at = 8;
+  common.Timestamp updated_at = 9;
+}
+
+message CreateOrderRequest {
+  string user_id = 1;
+  repeated OrderItem items = 2;
+  common.Address shipping_address = 3;
+}
+
+message GetOrderRequest {
+  string id = 1;
+}
+
+message ListOrdersRequest {
+  string user_id = 1;
+  common.Pagination pagination = 2;
+  OrderStatus status = 3;
+}
+
+message ListOrdersResponse {
+  repeated Order orders = 1;
+  common.PaginationResponse pagination = 2;
+}
+
+message UpdateOrderStatusRequest {
+  string id = 1;
+  OrderStatus status = 2;
+}
+
+message CancelOrderRequest {
+  string id = 1;
+  string reason = 2;
+}
