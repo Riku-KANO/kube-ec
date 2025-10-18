@@ -1,47 +1,47 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { productApi } from '@/lib/api'
-import type { Product } from '@/lib/types'
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { productApi } from '@/lib/api';
+import type { Product } from '@/lib/types';
 
 export default function ProductsPage() {
-  const [products, setProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [search, setSearch] = useState('')
-  const [category, setCategory] = useState('')
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
+  const [category, setCategory] = useState('');
 
   useEffect(() => {
-    loadProducts()
-  }, [category, search])
+    loadProducts();
+  }, [category, search]);
 
   const loadProducts = async () => {
     try {
-      setLoading(true)
-      const data = await productApi.list(1, 20, category, search)
-      setProducts(data.products || [])
+      setLoading(true);
+      const data = await productApi.list(1, 20, category, search);
+      setProducts(data.products || []);
     } catch (err) {
-      setError('商品の読み込みに失敗しました')
-      console.error(err)
+      setError('商品の読み込みに失敗しました');
+      console.error(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const formatPrice = (amount: number) => {
     return new Intl.NumberFormat('ja-JP', {
       style: 'currency',
       currency: 'JPY',
-    }).format(amount)
-  }
+    }).format(amount);
+  };
 
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">読み込み中...</div>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -49,7 +49,7 @@ export default function ProductsPage() {
       <div className="container mx-auto px-4 py-8">
         <div className="text-center text-red-500">{error}</div>
       </div>
-    )
+    );
   }
 
   return (
@@ -90,26 +90,20 @@ export default function ProductsPage() {
               <span className="text-gray-400">画像</span>
             </div>
             <h3 className="font-semibold mb-2 truncate">{product.name}</h3>
-            <p className="text-gray-600 text-sm mb-2 line-clamp-2">
-              {product.description}
-            </p>
+            <p className="text-gray-600 text-sm mb-2 line-clamp-2">{product.description}</p>
             <div className="flex justify-between items-center">
               <span className="text-lg font-bold text-primary">
                 {formatPrice(product.price.amount)}
               </span>
-              <span className="text-sm text-gray-500">
-                在庫: {product.stock_quantity}
-              </span>
+              <span className="text-sm text-gray-500">在庫: {product.stock_quantity}</span>
             </div>
           </Link>
         ))}
       </div>
 
       {products.length === 0 && (
-        <div className="text-center py-12 text-gray-500">
-          商品が見つかりませんでした
-        </div>
+        <div className="text-center py-12 text-gray-500">商品が見つかりませんでした</div>
       )}
     </div>
-  )
+  );
 }

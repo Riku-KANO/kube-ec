@@ -1,44 +1,44 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { orderApi } from '@/lib/api'
-import { useAuthStore } from '@/lib/store'
-import type { Order } from '@/lib/types'
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { orderApi } from '@/lib/api';
+import { useAuthStore } from '@/lib/store';
+import type { Order } from '@/lib/types';
 
 export default function OrdersPage() {
-  const router = useRouter()
-  const { user } = useAuthStore()
-  const [orders, setOrders] = useState<Order[]>([])
-  const [loading, setLoading] = useState(true)
+  const router = useRouter();
+  const { user } = useAuthStore();
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!user) {
-      router.push('/login')
-      return
+      router.push('/login');
+      return;
     }
-    loadOrders()
-  }, [user])
+    loadOrders();
+  }, [user]);
 
   const loadOrders = async () => {
-    if (!user) return
+    if (!user) return;
 
     try {
-      const data = await orderApi.list(user.id)
-      setOrders(data.orders || [])
+      const data = await orderApi.list(user.id);
+      setOrders(data.orders || []);
     } catch (err) {
-      console.error(err)
+      console.error(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const formatPrice = (amount: number) => {
     return new Intl.NumberFormat('ja-JP', {
       style: 'currency',
       currency: 'JPY',
-    }).format(amount)
-  }
+    }).format(amount);
+  };
 
   const getStatusText = (status: string) => {
     const statusMap: { [key: string]: string } = {
@@ -48,9 +48,9 @@ export default function OrdersPage() {
       ORDER_STATUS_SHIPPED: '発送済み',
       ORDER_STATUS_DELIVERED: '配達完了',
       ORDER_STATUS_CANCELLED: 'キャンセル',
-    }
-    return statusMap[status] || status
-  }
+    };
+    return statusMap[status] || status;
+  };
 
   const getStatusColor = (status: string) => {
     const colorMap: { [key: string]: string } = {
@@ -60,16 +60,16 @@ export default function OrdersPage() {
       ORDER_STATUS_SHIPPED: 'bg-green-100 text-green-800',
       ORDER_STATUS_DELIVERED: 'bg-gray-100 text-gray-800',
       ORDER_STATUS_CANCELLED: 'bg-red-100 text-red-800',
-    }
-    return colorMap[status] || 'bg-gray-100 text-gray-800'
-  }
+    };
+    return colorMap[status] || 'bg-gray-100 text-gray-800';
+  };
 
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">読み込み中...</div>
       </div>
-    )
+    );
   }
 
   return (
@@ -120,9 +120,7 @@ export default function OrdersPage() {
               <div className="border-t pt-4">
                 <div className="flex justify-between font-bold">
                   <span>合計金額</span>
-                  <span className="text-primary">
-                    {formatPrice(order.total_amount.amount)}
-                  </span>
+                  <span className="text-primary">{formatPrice(order.total_amount.amount)}</span>
                 </div>
               </div>
             </div>
@@ -130,5 +128,5 @@ export default function OrdersPage() {
         </div>
       )}
     </div>
-  )
+  );
 }

@@ -1,63 +1,63 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { productApi } from '@/lib/api'
-import { useCartStore, useAuthStore } from '@/lib/store'
-import type { Product } from '@/lib/types'
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { productApi } from '@/lib/api';
+import { useCartStore, useAuthStore } from '@/lib/store';
+import type { Product } from '@/lib/types';
 
 export default function ProductDetailPage({ params }: { params: { id: string } }) {
-  const router = useRouter()
-  const [product, setProduct] = useState<Product | null>(null)
-  const [quantity, setQuantity] = useState(1)
-  const [loading, setLoading] = useState(true)
-  const { addItem } = useCartStore()
-  const { user } = useAuthStore()
+  const router = useRouter();
+  const [product, setProduct] = useState<Product | null>(null);
+  const [quantity, setQuantity] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const { addItem } = useCartStore();
+  const { user } = useAuthStore();
 
   useEffect(() => {
-    loadProduct()
-  }, [params.id])
+    loadProduct();
+  }, [params.id]);
 
   const loadProduct = async () => {
     try {
-      const data = await productApi.get(params.id)
-      setProduct(data)
+      const data = await productApi.get(params.id);
+      setProduct(data);
     } catch (err) {
-      console.error(err)
+      console.error(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleAddToCart = () => {
-    if (!product) return
-    addItem(product, quantity)
-    alert('カートに追加しました')
-  }
+    if (!product) return;
+    addItem(product, quantity);
+    alert('カートに追加しました');
+  };
 
   const handleBuyNow = () => {
     if (!user) {
-      router.push('/login')
-      return
+      router.push('/login');
+      return;
     }
-    if (!product) return
-    addItem(product, quantity)
-    router.push('/cart')
-  }
+    if (!product) return;
+    addItem(product, quantity);
+    router.push('/cart');
+  };
 
   const formatPrice = (amount: number) => {
     return new Intl.NumberFormat('ja-JP', {
       style: 'currency',
       currency: 'JPY',
-    }).format(amount)
-  }
+    }).format(amount);
+  };
 
   if (loading) {
-    return <div className="container mx-auto px-4 py-8">読み込み中...</div>
+    return <div className="container mx-auto px-4 py-8">読み込み中...</div>;
   }
 
   if (!product) {
-    return <div className="container mx-auto px-4 py-8">商品が見つかりません</div>
+    return <div className="container mx-auto px-4 py-8">商品が見つかりません</div>;
   }
 
   return (
@@ -80,13 +80,9 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
           </div>
 
           <div className="mb-6">
-            <p className="text-sm text-gray-500">
-              カテゴリー: {product.category}
-            </p>
+            <p className="text-sm text-gray-500">カテゴリー: {product.category}</p>
             <p className="text-sm text-gray-500">SKU: {product.sku}</p>
-            <p className="text-sm text-gray-500">
-              在庫: {product.stock_quantity}個
-            </p>
+            <p className="text-sm text-gray-500">在庫: {product.stock_quantity}個</p>
           </div>
 
           {/* 数量選択 */}
@@ -120,5 +116,5 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         </div>
       </div>
     </div>
-  )
+  );
 }

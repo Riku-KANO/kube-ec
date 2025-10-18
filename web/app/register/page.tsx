@@ -1,38 +1,38 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { authApi } from '@/lib/api'
-import { useAuthStore } from '@/lib/store'
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { authApi } from '@/lib/api';
+import { useAuthStore } from '@/lib/store';
 
 export default function RegisterPage() {
-  const router = useRouter()
-  const { setAuth } = useAuthStore()
+  const router = useRouter();
+  const { setAuth } = useAuthStore();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
     passwordConfirm: '',
     phoneNumber: '',
-  })
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
+    e.preventDefault();
+    setError('');
 
     if (formData.password !== formData.passwordConfirm) {
-      setError('パスワードが一致しません')
-      return
+      setError('パスワードが一致しません');
+      return;
     }
 
-    setLoading(true)
+    setLoading(true);
 
     try {
       const data = await authApi.register(
@@ -40,15 +40,15 @@ export default function RegisterPage() {
         formData.password,
         formData.name,
         formData.phoneNumber
-      )
-      setAuth(data.user, data.access_token)
-      router.push('/')
+      );
+      setAuth(data.user, data.access_token);
+      router.push('/');
     } catch (err: any) {
-      setError(err.message || '登録に失敗しました')
+      setError(err.message || '登録に失敗しました');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="container mx-auto px-4 py-16">
@@ -158,5 +158,5 @@ export default function RegisterPage() {
         </p>
       </div>
     </div>
-  )
+  );
 }

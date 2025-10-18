@@ -1,28 +1,28 @@
-'use client'
+'use client';
 
-import { useRouter } from 'next/navigation'
-import { useCartStore, useAuthStore } from '@/lib/store'
+import { useRouter } from 'next/navigation';
+import { useCartStore, useAuthStore } from '@/lib/store';
 
 export default function CartPage() {
-  const router = useRouter()
-  const { user } = useAuthStore()
-  const { items, removeItem, updateQuantity, getTotalPrice, clearCart } = useCartStore()
+  const router = useRouter();
+  const { user } = useAuthStore();
+  const { items, removeItem, updateQuantity, getTotalPrice, clearCart } = useCartStore();
 
   const formatPrice = (amount: number) => {
     return new Intl.NumberFormat('ja-JP', {
       style: 'currency',
       currency: 'JPY',
-    }).format(amount)
-  }
+    }).format(amount);
+  };
 
   const handleCheckout = () => {
     if (!user) {
-      router.push('/login')
-      return
+      router.push('/login');
+      return;
     }
     // 決済ページに遷移（今後実装）
-    router.push('/checkout')
-  }
+    router.push('/checkout');
+  };
 
   if (items.length === 0) {
     return (
@@ -38,7 +38,7 @@ export default function CartPage() {
           </button>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -49,10 +49,7 @@ export default function CartPage() {
         {/* カート商品一覧 */}
         <div className="lg:col-span-2 space-y-4">
           {items.map((item) => (
-            <div
-              key={item.product.id}
-              className="flex gap-4 border rounded-lg p-4"
-            >
+            <div key={item.product.id} className="flex gap-4 border rounded-lg p-4">
               <div className="w-24 h-24 bg-gray-200 rounded flex-shrink-0 flex items-center justify-center">
                 <span className="text-xs text-gray-400">画像</span>
               </div>
@@ -65,9 +62,7 @@ export default function CartPage() {
 
                 <div className="flex items-center gap-2">
                   <button
-                    onClick={() =>
-                      updateQuantity(item.product.id, Math.max(1, item.quantity - 1))
-                    }
+                    onClick={() => updateQuantity(item.product.id, Math.max(1, item.quantity - 1))}
                     className="w-8 h-8 border rounded hover:bg-gray-100"
                   >
                     -
@@ -101,10 +96,7 @@ export default function CartPage() {
             </div>
           ))}
 
-          <button
-            onClick={clearCart}
-            className="text-sm text-gray-600 hover:underline"
-          >
+          <button onClick={clearCart} className="text-sm text-gray-600 hover:underline">
             カートを空にする
           </button>
         </div>
@@ -149,5 +141,5 @@ export default function CartPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

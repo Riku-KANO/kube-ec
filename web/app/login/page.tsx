@@ -1,34 +1,34 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { authApi } from '@/lib/api'
-import { useAuthStore } from '@/lib/store'
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { authApi } from '@/lib/api';
+import { useAuthStore } from '@/lib/store';
 
 export default function LoginPage() {
-  const router = useRouter()
-  const { setAuth } = useAuthStore()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const router = useRouter();
+  const { setAuth } = useAuthStore();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
+    e.preventDefault();
+    setError('');
+    setLoading(true);
 
     try {
-      const data = await authApi.login(email, password)
-      setAuth(data.user, data.access_token)
-      router.push('/')
+      const data = await authApi.login(email, password);
+      setAuth(data.user, data.access_token);
+      router.push('/');
     } catch (err: any) {
-      setError(err.message || 'ログインに失敗しました')
+      setError(err.message || 'ログインに失敗しました');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="container mx-auto px-4 py-16">
@@ -89,5 +89,5 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
-  )
+  );
 }

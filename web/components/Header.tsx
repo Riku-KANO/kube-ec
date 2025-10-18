@@ -1,11 +1,11 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { useAuthStore, useCartStore } from '@/lib/store'
+import Link from 'next/link';
+import { useAuthStore, useCartStore } from '@/lib/store';
 
 export default function Header() {
-  const { user, logout } = useAuthStore()
-  const { getTotalItems } = useCartStore()
+  const { user, logout } = useAuthStore();
+  const { getTotalItems } = useCartStore();
 
   return (
     <header className="bg-white shadow-md">
@@ -33,15 +33,10 @@ export default function Header() {
                     </span>
                   )}
                 </Link>
-                <button
-                  onClick={logout}
-                  className="hover:text-primary transition"
-                >
+                <button onClick={logout} className="hover:text-primary transition">
                   ログアウト
                 </button>
-                <span className="text-gray-600">
-                  {user.name} さん
-                </span>
+                <span className="text-gray-600">{user.name} さん</span>
               </>
             ) : (
               <>
@@ -60,5 +55,5 @@ export default function Header() {
         </div>
       </div>
     </header>
-  )
+  );
 }
