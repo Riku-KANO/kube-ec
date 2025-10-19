@@ -3,7 +3,7 @@ replicaCount: 2
 image:
   repository: kube-ec-web
   pullPolicy: IfNotPresent
-  tag: "latest"
+  tag: ""  # defaults to .Chart.AppVersion
 
 imagePullSecrets: []
 nameOverride: ""
@@ -28,10 +28,10 @@ ingress:
 resources:
   limits:
     cpu: 500m
-    memory: 512Mi
+    memory: 1Gi
   requests:
     cpu: 100m
-    memory: 128Mi
+    memory: 256Mi
 
 autoscaling:
   enabled: false
@@ -44,19 +44,28 @@ env:
   NEXT_TELEMETRY_DISABLED: "1"
   NEXT_PUBLIC_API_URL: "http://localhost:8080/api/v1"
 
+startupProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 0
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 30
+
 livenessProbe:
   httpGet:
     path: /
-    port: 3000
-  initialDelaySeconds: 30
+    port: http
+  initialDelaySeconds: 0
   periodSeconds: 10
   timeoutSeconds: 5
 
 readinessProbe:
   httpGet:
     path: /
-    port: 3000
-  initialDelaySeconds: 10
+    port: http
+  initialDelaySeconds: 0
   periodSeconds: 5
   timeoutSeconds: 3
 

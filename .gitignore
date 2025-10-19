@@ -51,9 +51,6 @@ dist/
 *.key
 *.crt
 
-# Docker
-.dockerignore
-
 # Logs
 *.log
 logs/
