@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { use, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { productApi } from '@/lib/api';
 import { useCartStore, useAuthStore } from '@/lib/store';
 import type { Product } from '@/lib/types';
 
-export default function ProductDetailPage({ params }: { params: { id: string } }) {
+export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
   const router = useRouter();
   const [product, setProduct] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState(1);
@@ -16,11 +17,11 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 
   useEffect(() => {
     loadProduct();
-  }, [params.id]);
+  }, [id]);
 
   const loadProduct = async () => {
     try {
-      const data = await productApi.get(params.id);
+      const data = await productApi.get(id);
       setProduct(data);
     } catch (err) {
       console.error(err);

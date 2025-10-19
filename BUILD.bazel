@@ -13,3 +13,15 @@ gazelle(
     ],
     command = "update-repos",
 )
+
+# Convenient aliases for building and deploying
+alias(
+    name = "web-image",
+    actual = "//web:build_image",
+)
+
+# Build all services
+alias(
+    name = "build-all",
+    actual = "//services/...",
+)
