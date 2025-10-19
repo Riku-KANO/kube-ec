@@ -1,0 +1,23 @@
+# Local development overrides
+replicaCount: 1
+
+image:
+  repository: kube-ec-web
+  pullPolicy: Never  # Use local images only
+  tag: "latest"
+
+service:
+  type: NodePort  # For Rancher Desktop, NodePort works better than LoadBalancer
+
+resources:
+  limits:
+    cpu: 250m
+    memory: 256Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+env:
+  NODE_ENV: development
+  NEXT_TELEMETRY_DISABLED: "1"
+  NEXT_PUBLIC_API_URL: "http://localhost:8080/api/v1"

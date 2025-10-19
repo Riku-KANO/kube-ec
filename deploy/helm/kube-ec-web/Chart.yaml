@@ -1,0 +1,12 @@
+apiVersion: v2
+name: kube-ec-web
+description: A Helm chart for kube-ec frontend web application
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - kube-ec
+  - frontend
+  - nextjs
+maintainers:
+  - name: kube-ec-team

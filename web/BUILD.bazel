@@ -1,0 +1,94 @@
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_tarball", "oci_push")
+load("@rules_pkg//:pkg.bzl", "pkg_tar")
+
+# Export files for rules
+exports_files([
+    "Dockerfile",
+    "package.json",
+    "next.config.js",
+    "pnpm-lock.yaml",
+])
+
+# Create a filegroup for all web source files
+filegroup(
+    name = "web_sources",
+    srcs = glob(
+        ["**/*"],
+        exclude = [
+            "node_modules/**",
+            ".next/**",
+            "BUILD.bazel",
+            "**/*.md",
+        ],
+    ),
+)
+
+# Build the Docker image using genrule
+# This runs docker build command through Bazel
+genrule(
+    name = "build_image",
+    srcs = [":web_sources"],
+    outs = ["image.tar"],
+    cmd = """
+        # Copy sources to a temporary directory
+        WORK_DIR=$$(mktemp -d)
+        cp -r $(location Dockerfile) $$WORK_DIR/
+        cp -r $(location package.json) $$WORK_DIR/
+        cp -r $(location next.config.js) $$WORK_DIR/
+        cp -r $$(dirname $(location package.json))/* $$WORK_DIR/ 2>/dev/null || true
+
+        # Build the image
+        cd $$WORK_DIR
+        if command -v nerdctl &> /dev/null; then
+            nerdctl build -t kube-ec-web:latest .
+            nerdctl save -o $(location image.tar) kube-ec-web:latest
+        elif command -v docker &> /dev/null; then
+            docker build -t kube-ec-web:latest .
+            docker save -o $(location image.tar) kube-ec-web:latest
+        else
+            echo "Error: Neither docker nor nerdctl found"
+            exit 1
+        fi
+
+        # Cleanup
+        rm -rf $$WORK_DIR
+    """,
+    tags = ["manual"],
+    visibility = ["//visibility:public"],
+)
+
+# Alternative: Load the image directly to the local container runtime
+sh_binary(
+    name = "docker_build",
+    srcs = ["//tools:docker_build.sh"],
+    data = [":web_sources"],
+    args = [
+        "$(location Dockerfile)",
+        "kube-ec-web:latest",
+    ],
+)
+
+# Push image to registry (for GCP deployment)
+genrule(
+    name = "push_image",
+    srcs = [],
+    outs = ["push.stamp"],
+    cmd = """
+        IMAGE_TAG=$${IMAGE_TAG:-latest}
+        REGISTRY=$${REGISTRY:-gcr.io/PROJECT_ID}
+
+        if command -v nerdctl &> /dev/null; then
+            nerdctl tag kube-ec-web:latest $$REGISTRY/kube-ec-web:$$IMAGE_TAG
+            nerdctl push $$REGISTRY/kube-ec-web:$$IMAGE_TAG
+        elif command -v docker &> /dev/null; then
+            docker tag kube-ec-web:latest $$REGISTRY/kube-ec-web:$$IMAGE_TAG
+            docker push $$REGISTRY/kube-ec-web:$$IMAGE_TAG
+        else
+            echo "Error: Neither docker nor nerdctl found"
+            exit 1
+        fi
+
+        echo "Pushed to $$REGISTRY/kube-ec-web:$$IMAGE_TAG" > $(location push.stamp)
+    """,
+    tags = ["manual"],
+)
