@@ -4,7 +4,7 @@ package payment;
 
 import "proto/common/common.proto";
 
-option go_package = "github.com/yourusername/kube-ec/proto/payment";
+option go_package = "github.com/Riku-KANO/kube-ec/proto/payment";
 
 service PaymentService {
   rpc CreatePayment(CreatePaymentRequest) returns (Payment);

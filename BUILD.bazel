@@ -1,6 +1,6 @@
-load("@bazel_gazelle//:def.bzl", "gazelle")
+load("@gazelle//:def.bzl", "gazelle")
 
-# gazelle:prefix github.com/yourusername/kube-ec
+# gazelle:prefix github.com/Riku-KANO/kube-ec
 # gazelle:proto disable_global
 gazelle(name = "gazelle")
 
@@ -20,8 +20,8 @@ alias(
     actual = "//web:build_image",
 )
 
-# Build all services
-alias(
-    name = "build-all",
-    actual = "//services/...",
-)
+# Build all services (disabled - use specific targets)
+# alias(
+#     name = "build-all",
+#     actual = "//services/...",
+# )

@@ -4,7 +4,7 @@ package user;
 
 import "proto/common/common.proto";
 
-option go_package = "github.com/yourusername/kube-ec/proto/user";
+option go_package = "github.com/Riku-KANO/kube-ec/proto/user";
 
 service UserService {
   rpc Register(RegisterRequest) returns (RegisterResponse);

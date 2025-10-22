@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package common;
 
-option go_package = "github.com/yourusername/kube-ec/proto/common";
+option go_package = "github.com/Riku-KANO/kube-ec/proto/common";
 
 // 共通メッセージ定義
 

@@ -24,7 +24,7 @@ http_archive(
 # Protobuf rules
 http_archive(
     name = "com_google_protobuf",
-    sha256 = "d0f5f605d0d656007ce6c8b5a82df3037e1d8fe8b121ed42e536f569dec16113",
+    sha256 = "a1fa6ffa97c09d1efe0344e4352a6dbc51cebaafbdf20bcb6405147a0158c406",
     strip_prefix = "protobuf-3.24.4",
     urls = [
         "https://github.com/protocolbuffers/protobuf/archive/v3.24.4.tar.gz",
@@ -34,7 +34,7 @@ http_archive(
 # gRPC rules
 http_archive(
     name = "com_github_grpc_grpc",
-    sha256 = "b956598d8cbe168b5ee717b5dafa56563eb5201a947856a6688bbeac9cac4e1f",
+    sha256 = "f40bde4ce2f31760f65dc49a2f50876f59077026494e67dccf23992548b1b04f",
     strip_prefix = "grpc-1.62.0",
     urls = [
         "https://github.com/grpc/grpc/archive/refs/tags/v1.62.0.tar.gz",
