@@ -1,0 +1,12 @@
+# Use Bzlmod (disable WORKSPACE)
+common --enable_bzlmod
+
+# Go settings
+build --incompatible_enable_cc_toolchain_resolution
+
+# Output settings
+build --show_timestamps
+build --color=yes
+
+# Performance
+build --jobs=auto

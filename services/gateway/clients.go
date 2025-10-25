@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"log"
 
-	productpb "github.com/yourusername/kube-ec/proto/product"
-	userpb "github.com/yourusername/kube-ec/proto/user"
-	orderpb "github.com/yourusername/kube-ec/proto/order"
-	paymentpb "github.com/yourusername/kube-ec/proto/payment"
+	productpb "github.com/Riku-KANO/kube-ec/proto/product"
+	userpb "github.com/Riku-KANO/kube-ec/proto/user"
+	orderpb "github.com/Riku-KANO/kube-ec/proto/order"
+	paymentpb "github.com/Riku-KANO/kube-ec/proto/payment"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )

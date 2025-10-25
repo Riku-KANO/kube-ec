@@ -1,0 +1,18 @@
+{
+  "name": "kube-ec",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Kubernetes E-Commerce Platform",
+  "scripts": {
+    "codegen": "npm run codegen:go && npm run codegen:ts",
+    "codegen:go": "bash scripts/generate-go.sh",
+    "codegen:ts": "cd web && npm run codegen",
+    "install:tools": "bash tools/install-generators.sh",
+    "web:install": "cd web && npm install",
+    "web:dev": "cd web && npm run dev",
+    "web:build": "cd web && npm run build"
+  },
+  "workspaces": [
+    "web"
+  ]
+}
