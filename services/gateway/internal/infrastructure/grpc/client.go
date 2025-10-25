@@ -14,9 +14,10 @@ type ClientConfig struct {
 	UserServiceAddr string
 }
 
-// Clients holds all gRPC clients
+// Clients holds all gRPC clients and connections
 type Clients struct {
 	UserClient userpb.UserServiceClient
+	userConn   *grpc.ClientConn
 }
 
 // NewClients creates new gRPC clients
@@ -32,5 +33,14 @@ func NewClients(config ClientConfig) (*Clients, error) {
 
 	return &Clients{
 		UserClient: userpb.NewUserServiceClient(userConn),
+		userConn:   userConn,
 	}, nil
+}
+
+// Close closes all gRPC connections
+func (c *Clients) Close() error {
+	if c.userConn != nil {
+		return c.userConn.Close()
+	}
+	return nil
 }

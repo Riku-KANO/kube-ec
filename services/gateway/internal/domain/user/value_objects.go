@@ -32,12 +32,20 @@ type PhoneNumber struct {
 	value string
 }
 
-// NewPhoneNumber creates a new PhoneNumber value object
+// NewPhoneNumber creates a new PhoneNumber value object with E.164 format validation
 func NewPhoneNumber(phone string) (PhoneNumber, error) {
 	if phone == "" {
 		return PhoneNumber{}, fmt.Errorf("phone number cannot be empty")
 	}
-	// 簡易的なバリデーション（必要に応じて強化）
+
+	// E.164 format validation: +[country code][subscriber number]
+	// Format: +[1-9][0-9]{1,14}
+	// Example: +819012345678 (Japan), +14155552671 (US)
+	e164Regex := regexp.MustCompile(`^\+[1-9]\d{1,14}$`)
+	if !e164Regex.MatchString(phone) {
+		return PhoneNumber{}, fmt.Errorf("phone number must be in E.164 format (e.g., +819012345678)")
+	}
+
 	return PhoneNumber{value: phone}, nil
 }
 
