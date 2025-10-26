@@ -1,19 +1,17 @@
 FROM golang:1.25-alpine AS builder
 
-WORKDIR /app
+WORKDIR /workspace
 
-# Copy go.mod and go.sum
-COPY go.mod go.sum* ./
+# Copy proto and pkg directories first (needed by go.mod replace directive)
+COPY proto/ ./proto/
+COPY pkg/ ./pkg/
 
-# Copy proto and pkg dependencies
-COPY ../../proto /proto
-COPY ../../pkg /pkg
-
-# Download dependencies
+# Copy auth service
+WORKDIR /workspace/services/auth
+COPY services/auth/go.mod services/auth/go.sum* ./
 RUN go mod download
 
-# Copy service code
-COPY . .
+COPY services/auth/ ./
 
 # Build the service
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o auth-service ./cmd/server
@@ -24,7 +22,7 @@ RUN apk --no-cache add ca-certificates
 
 WORKDIR /root/
 
-COPY --from=builder /app/auth-service .
+COPY --from=builder /workspace/services/auth/auth-service .
 
 EXPOSE 50052
 

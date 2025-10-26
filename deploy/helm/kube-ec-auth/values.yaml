@@ -1,0 +1,82 @@
+replicaCount: 2
+
+image:
+  repository: ghcr.io/riku-kano/kube-ec-auth
+  pullPolicy: Always
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 50052
+  targetPort: 50052
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+env:
+  grpcPort: "50052"
+  # Database connection (from secret)
+  # databaseUrl: will be set from secret
+  # JWT secret (from secret)
+  # jwtSecret: will be set from secret
+
+# Secrets
+secrets:
+  # Database URL secret
+  databaseUrl:
+    secretName: db-secret
+    key: database-url
+  # JWT secret
+  jwtSecret:
+    secretName: jwt-secret
+    key: secret
+
+# gRPC health check using TCP socket
+livenessProbe:
+  tcpSocket:
+    port: grpc
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  tcpSocket:
+    port: grpc
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

@@ -4,11 +4,6 @@ import (
 	"context"
 	"time"
 
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
-
-	"github.com/Riku-KANO/kube-ec/proto/common"
-	"github.com/Riku-KANO/kube-ec/services/gateway/internal/domain/errors"
 	"github.com/Riku-KANO/kube-ec/services/gateway/internal/domain/user"
 	userpb "github.com/Riku-KANO/kube-ec/proto/user"
 )

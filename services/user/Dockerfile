@@ -1,11 +1,17 @@
 FROM golang:1.25-alpine AS builder
 
-WORKDIR /app
+WORKDIR /workspace
 
-COPY go.mod go.sum* ./
+# Copy proto and pkg directories first (needed by go.mod replace directive)
+COPY proto/ ./proto/
+COPY pkg/ ./pkg/
+
+# Copy user service
+WORKDIR /workspace/services/user
+COPY services/user/go.mod services/user/go.sum* ./
 RUN go mod download
 
-COPY . .
+COPY services/user/ ./
 
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o user-service .
 
@@ -15,7 +21,7 @@ RUN apk --no-cache add ca-certificates
 
 WORKDIR /root/
 
-COPY --from=builder /app/user-service .
+COPY --from=builder /workspace/services/user/user-service .
 
 EXPOSE 50051
 

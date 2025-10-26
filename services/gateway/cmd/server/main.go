@@ -34,8 +34,8 @@ func main() {
 	userRepo := grpc.NewUserRepository(grpcClients.UserClient)
 
 	// Initialize application services
-	// Use authRepo for authentication operations
-	userService := appuser.NewService(authRepo)
+	// Use authRepo for authentication operations and userRepo for user management
+	userService := appuser.NewService(authRepo, userRepo)
 
 	// Initialize presentation layer (HTTP handlers)
 	userHandler := handler.NewUserHandler(userService)

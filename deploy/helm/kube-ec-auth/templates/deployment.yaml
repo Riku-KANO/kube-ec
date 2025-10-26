@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "kube-ec-gateway.fullname" . }}
+  name: {{ include "kube-ec-auth.fullname" . }}
   labels:
-    {{- include "kube-ec-gateway.labels" . | nindent 4 }}
+    {{- include "kube-ec-auth.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "kube-ec-gateway.selectorLabels" . | nindent 6 }}
+      {{- include "kube-ec-auth.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "kube-ec-gateway.selectorLabels" . | nindent 8 }}
+        {{- include "kube-ec-auth.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "kube-ec-gateway.serviceAccountName" . }}
+      serviceAccountName: {{ include "kube-ec-auth.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -34,24 +34,22 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
-        - name: http
+        - name: grpc
           containerPort: {{ .Values.service.targetPort }}
           protocol: TCP
         env:
-        - name: PORT
-          value: {{ .Values.env.port | quote }}
-        - name: GIN_MODE
-          value: {{ .Values.env.ginMode | quote }}
-        - name: AUTH_SERVICE_ADDR
-          value: {{ .Values.env.authServiceAddr | quote }}
-        - name: USER_SERVICE_ADDR
-          value: {{ .Values.env.userServiceAddr | quote }}
-        - name: PRODUCT_SERVICE_ADDR
-          value: {{ .Values.env.productServiceAddr | quote }}
-        - name: ORDER_SERVICE_ADDR
-          value: {{ .Values.env.orderServiceAddr | quote }}
-        - name: PAYMENT_SERVICE_ADDR
-          value: {{ .Values.env.paymentServiceAddr | quote }}
+        - name: GRPC_PORT
+          value: {{ .Values.env.grpcPort | quote }}
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secrets.databaseUrl.secretName }}
+              key: {{ .Values.secrets.databaseUrl.key }}
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secrets.jwtSecret.secretName }}
+              key: {{ .Values.secrets.jwtSecret.key }}
         livenessProbe:
           {{- toYaml .Values.livenessProbe | nindent 12 }}
         readinessProbe:

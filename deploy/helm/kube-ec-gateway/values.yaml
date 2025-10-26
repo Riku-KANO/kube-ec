@@ -55,6 +55,7 @@ env:
   port: "8080"
   ginMode: "release"
   # Microservice addresses
+  authServiceAddr: "auth-service:50052"
   userServiceAddr: "user-service:50051"
   productServiceAddr: "product-service:50051"
   orderServiceAddr: "order-service:50051"

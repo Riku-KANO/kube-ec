@@ -2,8 +2,9 @@ FROM golang:1.25-alpine AS builder
 
 WORKDIR /workspace
 
-# Copy proto directory first (needed by go.mod replace directive)
+# Copy proto and pkg directories first (needed by go.mod replace directive)
 COPY proto/ ./proto/
+COPY pkg/ ./pkg/
 
 # Copy gateway service
 WORKDIR /workspace/services/gateway
