@@ -18,6 +18,7 @@ import (
 func main() {
 	// Load configuration from environment variables
 	config := grpc.ClientConfig{
+		AuthServiceAddr: getEnv("AUTH_SERVICE_ADDR", "localhost:50052"),
 		UserServiceAddr: getEnv("USER_SERVICE_ADDR", "localhost:50051"),
 	}
 
@@ -29,10 +30,12 @@ func main() {
 	defer grpcClients.Close()
 
 	// Initialize repositories
+	authRepo := grpc.NewAuthRepository(grpcClients.AuthClient)
 	userRepo := grpc.NewUserRepository(grpcClients.UserClient)
 
 	// Initialize application services
-	userService := appuser.NewService(userRepo)
+	// Use authRepo for authentication operations
+	userService := appuser.NewService(authRepo)
 
 	// Initialize presentation layer (HTTP handlers)
 	userHandler := handler.NewUserHandler(userService)

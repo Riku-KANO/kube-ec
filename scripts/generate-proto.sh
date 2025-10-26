@@ -13,6 +13,13 @@ protoc --go_out=. --go_opt=paths=source_relative \
   --proto_path=. \
   proto/common/common.proto
 
+# Generate auth proto
+echo "Generating auth proto..."
+protoc --go_out=. --go_opt=paths=source_relative \
+  --go-grpc_out=. --go-grpc_opt=paths=source_relative \
+  --proto_path=. \
+  proto/auth/auth.proto
+
 # Generate user proto
 echo "Generating user proto..."
 protoc --go_out=. --go_opt=paths=source_relative \

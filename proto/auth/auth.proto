@@ -1,0 +1,112 @@
+syntax = "proto3";
+
+package auth;
+
+import "proto/common/common.proto";
+
+option go_package = "github.com/Riku-KANO/kube-ec/proto/auth";
+
+// AuthService handles all authentication operations
+// Designed to support multiple authentication methods in the future (OAuth, SAML, MFA, etc.)
+service AuthService {
+  // Register creates a new user account with email/password authentication
+  rpc Register(RegisterRequest) returns (RegisterResponse);
+
+  // Login authenticates a user with email/password
+  rpc Login(LoginRequest) returns (LoginResponse);
+
+  // VerifyToken validates a JWT access token
+  rpc VerifyToken(VerifyTokenRequest) returns (VerifyTokenResponse);
+
+  // RefreshToken generates a new access token using a refresh token
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
+
+  // Logout invalidates a user's tokens (for future implementation)
+  rpc Logout(LogoutRequest) returns (LogoutResponse);
+
+  // ChangePassword allows users to change their password
+  rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse);
+}
+
+// RegisterRequest contains user registration information
+message RegisterRequest {
+  string email = 1;
+  string password = 2;
+  string name = 3;
+  string phone_number = 4;
+}
+
+// RegisterResponse returns user info and authentication tokens
+message RegisterResponse {
+  string user_id = 1;
+  string email = 2;
+  string name = 3;
+  string phone_number = 4;
+  string access_token = 5;
+  string refresh_token = 6;
+  common.Timestamp created_at = 7;
+}
+
+// LoginRequest contains login credentials
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+// LoginResponse returns user info and authentication tokens
+message LoginResponse {
+  string user_id = 1;
+  string email = 2;
+  string name = 3;
+  string phone_number = 4;
+  string access_token = 5;
+  string refresh_token = 6;
+}
+
+// VerifyTokenRequest contains the token to verify
+message VerifyTokenRequest {
+  string token = 1;
+}
+
+// VerifyTokenResponse returns token validation result
+message VerifyTokenResponse {
+  bool valid = 1;
+  string user_id = 2;
+  string email = 3;
+  common.Timestamp expires_at = 4;
+}
+
+// RefreshTokenRequest contains the refresh token
+message RefreshTokenRequest {
+  string refresh_token = 1;
+}
+
+// RefreshTokenResponse returns new access token
+message RefreshTokenResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+  common.Timestamp expires_at = 3;
+}
+
+// LogoutRequest contains user session information
+message LogoutRequest {
+  string user_id = 1;
+  string token = 2;
+}
+
+// LogoutResponse confirms logout success
+message LogoutResponse {
+  bool success = 1;
+}
+
+// ChangePasswordRequest contains password change information
+message ChangePasswordRequest {
+  string user_id = 1;
+  string old_password = 2;
+  string new_password = 3;
+}
+
+// ChangePasswordResponse confirms password change
+message ChangePasswordResponse {
+  bool success = 1;
+}
