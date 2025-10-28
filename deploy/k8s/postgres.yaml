@@ -9,7 +9,7 @@ data:
     CREATE TABLE IF NOT EXISTS users (
         id VARCHAR(255) PRIMARY KEY,
         email VARCHAR(255) UNIQUE NOT NULL,
-        password_hash VARCHAR(255) NOT NULL,
+        password_hash VARCHAR(60) NOT NULL,  -- bcrypt hashes are always 60 characters
         name VARCHAR(255) NOT NULL,
         phone_number VARCHAR(50),
         created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -34,6 +34,23 @@ spec:
     requests:
       storage: 1Gi
 ---
+# NOTE: This PostgreSQL deployment is for DEVELOPMENT/TESTING ONLY
+# For production, use a managed database service or implement:
+# - High availability (replicas, failover)
+# - Automated backups
+# - Monitoring and alerting
+# - Security hardening
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-credentials
+  namespace: kube-ec
+type: Opaque
+stringData:
+  username: postgres
+  password: postgres  # Change this in production
+  database: kube_ec
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -54,11 +71,20 @@ spec:
         image: postgres:15-alpine
         env:
         - name: POSTGRES_USER
-          value: postgres
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials
+              key: username
         - name: POSTGRES_PASSWORD
-          value: postgres
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials
+              key: password
         - name: POSTGRES_DB
-          value: kube_ec
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials
+              key: database
         ports:
         - containerPort: 5432
           name: postgres

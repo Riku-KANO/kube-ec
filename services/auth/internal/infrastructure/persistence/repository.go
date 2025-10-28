@@ -3,11 +3,18 @@ package persistence
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 	"time"
 
+	"github.com/lib/pq"
 	pkgerrors "github.com/Riku-KANO/kube-ec/pkg/errors"
 	"github.com/Riku-KANO/kube-ec/services/auth/internal/domain/auth"
+)
+
+const (
+	// dbTimeout is the default timeout for database operations
+	dbTimeout = 10 * time.Second
 )
 
 // AuthRepository implements auth.Repository using PostgreSQL
@@ -22,6 +29,9 @@ func NewAuthRepository(db *sql.DB) *AuthRepository {
 
 // CreateUser creates a new user in the database
 func (r *AuthRepository) CreateUser(ctx context.Context, user *auth.User) error {
+	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
+	defer cancel()
+
 	query := `
 		INSERT INTO users (id, email, password_hash, name, phone_number, created_at, updated_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $7)
@@ -50,6 +60,9 @@ func (r *AuthRepository) CreateUser(ctx context.Context, user *auth.User) error 
 
 // FindByEmail retrieves a user by email address
 func (r *AuthRepository) FindByEmail(ctx context.Context, email auth.Email) (*auth.User, error) {
+	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
+	defer cancel()
+
 	query := `
 		SELECT id, email, password_hash, name, phone_number, created_at, updated_at
 		FROM users
@@ -88,6 +101,9 @@ func (r *AuthRepository) FindByEmail(ctx context.Context, email auth.Email) (*au
 
 // FindByID retrieves a user by ID
 func (r *AuthRepository) FindByID(ctx context.Context, id string) (*auth.User, error) {
+	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
+	defer cancel()
+
 	query := `
 		SELECT id, email, password_hash, name, phone_number, created_at, updated_at
 		FROM users
@@ -125,6 +141,9 @@ func (r *AuthRepository) FindByID(ctx context.Context, id string) (*auth.User, e
 
 // UpdatePassword updates a user's password
 func (r *AuthRepository) UpdatePassword(ctx context.Context, userID string, password auth.Password) error {
+	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
+	defer cancel()
+
 	query := `
 		UPDATE users
 		SET password_hash = $2, updated_at = $3
@@ -161,7 +180,15 @@ func rowToUser(id, emailStr, passwordHash, name, phoneNumber string, createdAt, 
 
 // isDuplicateKeyError checks if the error is a duplicate key constraint violation
 func isDuplicateKeyError(err error) bool {
-	// PostgreSQL error code 23505 is unique_violation
-	return err != nil && (err.Error() == "pq: duplicate key value violates unique constraint \"users_email_key\"" ||
-		err.Error() == "ERROR: duplicate key value violates unique constraint \"users_email_key\" (SQLSTATE 23505)")
+	if err == nil {
+		return false
+	}
+
+	// Check if error is a PostgreSQL error with code 23505 (unique_violation)
+	var pqErr *pq.Error
+	if errors.As(err, &pqErr) {
+		return pqErr.Code == "23505"
+	}
+
+	return false
 }

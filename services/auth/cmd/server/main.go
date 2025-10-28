@@ -37,6 +37,11 @@ func main() {
 	}
 	defer db.Close()
 
+	// Configure connection pool
+	db.SetMaxOpenConns(25)                 // Maximum number of open connections
+	db.SetMaxIdleConns(5)                  // Maximum number of idle connections
+	db.SetConnMaxLifetime(5 * time.Minute) // Maximum lifetime of a connection
+
 	if err := db.Ping(); err != nil {
 		log.Fatalf("Failed to ping database: %v", err)
 	}

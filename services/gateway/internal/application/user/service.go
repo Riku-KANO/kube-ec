@@ -33,7 +33,7 @@ func (s *Service) Register(ctx context.Context, input RegisterInput) (AuthOutput
 		return AuthOutput{}, errors.ErrInvalidInput
 	}
 
-	// Hash password
+	// Validate password (auth service will handle hashing)
 	password, err := user.NewPassword(input.Password)
 	if err != nil {
 		return AuthOutput{}, errors.ErrInvalidInput
@@ -48,8 +48,8 @@ func (s *Service) Register(ctx context.Context, input RegisterInput) (AuthOutput
 		phoneNumber = &phone
 	}
 
-	// Call repository with hashed password
-	registeredUser, tokens, err := s.authRepo.Register(ctx, email, password.Hash(), input.Name, phoneNumber)
+	// Call repository with plain password (auth service will hash it)
+	registeredUser, tokens, err := s.authRepo.Register(ctx, email, input.Password, input.Name, phoneNumber)
 	if err != nil {
 		return AuthOutput{}, err
 	}
