@@ -9,6 +9,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	appuser "github.com/Riku-KANO/kube-ec/services/gateway/internal/application/user"
 	"github.com/Riku-KANO/kube-ec/services/gateway/internal/infrastructure/grpc"
 	httpserver "github.com/Riku-KANO/kube-ec/services/gateway/internal/presentation/http"
@@ -43,11 +44,23 @@ func main() {
 	// Setup router
 	router := httpserver.SetupRouter(userHandler)
 
+	// Configure CORS
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:3000", "http://localhost:3001"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+	}))
+
 	// Create HTTP server
 	port := getEnv("PORT", "8080")
 	srv := &http.Server{
-		Addr:    ":" + port,
-		Handler: router,
+		Addr:         ":" + port,
+		Handler:      router,
+		ReadTimeout:  15 * time.Second,
+		WriteTimeout: 15 * time.Second,
+		IdleTimeout:  60 * time.Second,
 	}
 
 	// Start server in a goroutine
