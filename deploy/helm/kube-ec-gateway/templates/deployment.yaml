@@ -42,6 +42,8 @@ spec:
           value: {{ .Values.env.port | quote }}
         - name: GIN_MODE
           value: {{ .Values.env.ginMode | quote }}
+        - name: AUTH_SERVICE_ADDR
+          value: {{ .Values.env.authServiceAddr | quote }}
         - name: USER_SERVICE_ADDR
           value: {{ .Values.env.userServiceAddr | quote }}
         - name: PRODUCT_SERVICE_ADDR

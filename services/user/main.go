@@ -7,7 +7,7 @@ import (
 	"net"
 	"os"
 
-	pb "github.com/yourusername/kube-ec/proto/user"
+	pb "github.com/Riku-KANO/kube-ec/proto/user"
 	_ "github.com/lib/pq"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -18,11 +18,6 @@ func main() {
 	dbURL := os.Getenv("DATABASE_URL")
 	if dbURL == "" {
 		log.Fatal("DATABASE_URL environment variable is required")
-	}
-
-	jwtSecret := os.Getenv("JWT_SECRET")
-	if jwtSecret == "" {
-		log.Fatal("JWT_SECRET environment variable is required")
 	}
 
 	// データベース接続
@@ -40,7 +35,7 @@ func main() {
 
 	// リポジトリとサーバーの初期化
 	repo := NewUserRepository(db)
-	userServer := NewUserServer(repo, jwtSecret)
+	userServer := NewUserServer(repo)
 
 	// gRPCサーバーの起動
 	port := os.Getenv("GRPC_PORT")

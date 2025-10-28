@@ -9,12 +9,14 @@ import (
 
 // Service ユーザーアプリケーションサービス
 type Service struct {
-	userRepo user.Repository
+	authRepo user.AuthRepository
+	userRepo user.UserRepository
 }
 
 // NewService creates a new user application service
-func NewService(userRepo user.Repository) *Service {
+func NewService(authRepo user.AuthRepository, userRepo user.UserRepository) *Service {
 	return &Service{
+		authRepo: authRepo,
 		userRepo: userRepo,
 	}
 }
@@ -31,7 +33,7 @@ func (s *Service) Register(ctx context.Context, input RegisterInput) (AuthOutput
 		return AuthOutput{}, errors.ErrInvalidInput
 	}
 
-	// Hash password
+	// Validate password (auth service will handle hashing)
 	password, err := user.NewPassword(input.Password)
 	if err != nil {
 		return AuthOutput{}, errors.ErrInvalidInput
@@ -46,8 +48,8 @@ func (s *Service) Register(ctx context.Context, input RegisterInput) (AuthOutput
 		phoneNumber = &phone
 	}
 
-	// Call repository with hashed password
-	registeredUser, tokens, err := s.userRepo.Register(ctx, email, password.Hash(), input.Name, phoneNumber)
+	// Call repository with plain password (auth service will hash it)
+	registeredUser, tokens, err := s.authRepo.Register(ctx, email, input.Password, input.Name, phoneNumber)
 	if err != nil {
 		return AuthOutput{}, err
 	}
@@ -66,7 +68,7 @@ func (s *Service) Login(ctx context.Context, input LoginInput) (AuthOutput, erro
 		return AuthOutput{}, errors.ErrInvalidInput
 	}
 
-	authenticatedUser, tokens, err := s.userRepo.Login(ctx, email, input.Password)
+	authenticatedUser, tokens, err := s.authRepo.Login(ctx, email, input.Password)
 	if err != nil {
 		return AuthOutput{}, err
 	}

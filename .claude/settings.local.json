@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(timeout 180 ./bazel.exe build //services/product:product)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

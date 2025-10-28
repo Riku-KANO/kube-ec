@@ -1,0 +1,13 @@
+apiVersion: v2
+name: kube-ec-auth
+description: A Helm chart for kube-ec Auth service
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - kube-ec
+  - auth
+  - authentication
+  - microservices
+maintainers:
+  - name: kube-ec-team
