@@ -40,16 +40,15 @@ spec:
 # - Automated backups
 # - Monitoring and alerting
 # - Security hardening
-apiVersion: v1
-kind: Secret
-metadata:
-  name: postgres-credentials
-  namespace: kube-ec
-type: Opaque
-stringData:
-  username: postgres
-  password: postgres  # Change this in production
-  database: kube_ec
+#
+# Before deploying, create the postgres-credentials secret:
+#   kubectl create secret generic postgres-credentials \
+#     --namespace=kube-ec \
+#     --from-literal=username=postgres \
+#     --from-literal=password=$(openssl rand -base64 32) \
+#     --from-literal=database=kube_ec
+#
+# See deploy/k8s/README.md for detailed setup instructions.
 ---
 apiVersion: apps/v1
 kind: Deployment

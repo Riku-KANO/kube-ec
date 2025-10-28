@@ -73,7 +73,10 @@ func main() {
 		log.Fatalf("Failed to listen: %v", err)
 	}
 
-	grpcServer := grpc.NewServer()
+	// Create gRPC server with interceptors
+	grpcServer := grpc.NewServer(
+		grpc.UnaryInterceptor(grpchandler.UnaryRequestIDInterceptor()),
+	)
 	authpb.RegisterAuthServiceServer(grpcServer, authHandler)
 
 	// Enable reflection for development (e.g., grpcurl)

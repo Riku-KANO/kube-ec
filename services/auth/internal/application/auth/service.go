@@ -83,13 +83,14 @@ func (s *Service) Register(ctx context.Context, input RegisterInput) (*AuthOutpu
 	}
 
 	return &AuthOutput{
-		UserID:       user.ID(),
-		Email:        user.Email().String(),
-		Name:         user.Name(),
-		PhoneNumber:  user.PhoneNumber(),
-		AccessToken:  accessToken,
-		RefreshToken: refreshToken,
-		CreatedAt:    user.CreatedAt(),
+		UserID:              user.ID(),
+		Email:               user.Email().String(),
+		Name:                user.Name(),
+		PhoneNumber:         user.PhoneNumber(),
+		AccessToken:         accessToken,
+		RefreshToken:        refreshToken,
+		AccessTokenExpiresAt: time.Now().Add(s.accessDuration),
+		CreatedAt:           user.CreatedAt(),
 	}, nil
 }
 
@@ -126,12 +127,14 @@ func (s *Service) Login(ctx context.Context, input LoginInput) (*AuthOutput, err
 	}
 
 	return &AuthOutput{
-		UserID:       user.ID(),
-		Email:        user.Email().String(),
-		Name:         user.Name(),
-		PhoneNumber:  user.PhoneNumber(),
-		AccessToken:  accessToken,
-		RefreshToken: refreshToken,
+		UserID:              user.ID(),
+		Email:               user.Email().String(),
+		Name:                user.Name(),
+		PhoneNumber:         user.PhoneNumber(),
+		AccessToken:         accessToken,
+		RefreshToken:        refreshToken,
+		AccessTokenExpiresAt: time.Now().Add(s.accessDuration),
+		CreatedAt:           user.CreatedAt(),
 	}, nil
 }
 
@@ -178,12 +181,14 @@ func (s *Service) RefreshToken(ctx context.Context, refreshToken string) (*AuthO
 	}
 
 	return &AuthOutput{
-		UserID:       user.ID(),
-		Email:        user.Email().String(),
-		Name:         user.Name(),
-		PhoneNumber:  user.PhoneNumber(),
-		AccessToken:  accessToken,
-		RefreshToken: newRefreshToken,
+		UserID:              user.ID(),
+		Email:               user.Email().String(),
+		Name:                user.Name(),
+		PhoneNumber:         user.PhoneNumber(),
+		AccessToken:         accessToken,
+		RefreshToken:        newRefreshToken,
+		AccessTokenExpiresAt: time.Now().Add(s.accessDuration),
+		CreatedAt:           user.CreatedAt(),
 	}, nil
 }
 

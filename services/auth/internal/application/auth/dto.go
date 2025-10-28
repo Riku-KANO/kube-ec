@@ -25,13 +25,14 @@ type ChangePasswordInput struct {
 
 // AuthOutput represents authentication response data
 type AuthOutput struct {
-	UserID       string
-	Email        string
-	Name         string
-	PhoneNumber  string
-	AccessToken  string
-	RefreshToken string
-	CreatedAt    time.Time
+	UserID              string
+	Email               string
+	Name                string
+	PhoneNumber         string
+	AccessToken         string
+	RefreshToken        string
+	AccessTokenExpiresAt time.Time
+	CreatedAt           time.Time
 }
 
 // TokenVerificationOutput represents token verification result

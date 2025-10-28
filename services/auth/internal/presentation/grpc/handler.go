@@ -126,7 +126,7 @@ func (h *AuthHandler) RefreshToken(ctx context.Context, req *authpb.RefreshToken
 		AccessToken:  output.AccessToken,
 		RefreshToken: output.RefreshToken,
 		ExpiresAt: &commonpb.Timestamp{
-			Seconds: output.CreatedAt.Add(24 * 3600 * 1000000000).Unix(),
+			Seconds: output.AccessTokenExpiresAt.Unix(),
 		},
 	}, nil
 }
