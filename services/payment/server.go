@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	pb "github.com/Riku-KANO/kube-ec/proto/payment"
 	"github.com/google/uuid"
-	pb "github.com/yourusername/kube-ec/proto/payment"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

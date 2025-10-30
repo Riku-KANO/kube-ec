@@ -123,9 +123,7 @@ export default function ExamplePage() {
       )}
 
       <div className="mt-4 p-4 bg-gray-100 rounded">
-        <p className="text-sm text-gray-600">
-          Open the browser console to see API responses
-        </p>
+        <p className="text-sm text-gray-600">Open the browser console to see API responses</p>
       </div>
     </div>
   );

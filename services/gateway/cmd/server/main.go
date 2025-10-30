@@ -9,11 +9,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/gin-contrib/cors"
 	appuser "github.com/Riku-KANO/kube-ec/services/gateway/internal/application/user"
 	"github.com/Riku-KANO/kube-ec/services/gateway/internal/infrastructure/grpc"
 	httpserver "github.com/Riku-KANO/kube-ec/services/gateway/internal/presentation/http"
 	"github.com/Riku-KANO/kube-ec/services/gateway/internal/presentation/http/handler"
+	"github.com/gin-contrib/cors"
 )
 
 func main() {

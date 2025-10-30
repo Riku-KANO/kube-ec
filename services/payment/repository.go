@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	pb "github.com/yourusername/kube-ec/proto/payment"
-	commonpb "github.com/yourusername/kube-ec/proto/common"
+	commonpb "github.com/Riku-KANO/kube-ec/proto/common"
+	pb "github.com/Riku-KANO/kube-ec/proto/payment"
 )
 
 type PaymentRepository struct {

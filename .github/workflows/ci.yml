@@ -40,22 +40,22 @@ jobs:
         run: |
           unformatted=$(gofmt -l .)
           if [ -n "$unformatted" ]; then
-            echo "L The following files are not formatted:"
+            echo "❌ The following files are not formatted:"
             echo "$unformatted"
             echo ""
             echo "Please run: gofmt -w services/${{ matrix.service }}"
             exit 1
           fi
-          echo " All Go files are properly formatted"
+          echo "✅ All Go files are properly formatted"
 
       - name: Run go vet
         working-directory: services/${{ matrix.service }}
         run: go vet ./...
 
       - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v4
+        uses: golangci/golangci-lint-action@v6
         with:
-          version: latest
+          version: v7
           working-directory: services/${{ matrix.service }}
           args: --timeout=5m
 
@@ -104,35 +104,47 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: web/package-lock.json
+          node-version: '24'
+
+      - name: Install pnpm
+        run: corepack enable
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('web/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate TypeScript types from OpenAPI
+        run: pnpm exec openapi-typescript ../api/openapi/user.yaml -o src/types/api/user.ts
 
       - name: Check Prettier formatting
         run: |
-          npm run format:check || {
-            echo "L Code is not formatted"
-            echo "Please run: cd web && npm run format"
+          pnpm run format:check || {
+            echo "❌ Code is not formatted"
+            echo "Please run: cd web && pnpm run format"
             exit 1
           }
-          echo " All files are properly formatted"
+          echo "✅ All files are properly formatted"
 
       - name: Run ESLint
-        run: npm run lint
+        run: pnpm run lint
 
       - name: TypeScript type check
-        run: npx tsc --noEmit
+        run: pnpm exec tsc --noEmit
 
       - name: Run tests
-        run: npm test --if-present
+        run: pnpm test --if-present
 
       - name: Build production bundle
-        run: npm run build
+        run: pnpm run build
         env:
           NEXT_PUBLIC_API_URL: http://localhost:8080/api/v1
 
@@ -151,7 +163,7 @@ jobs:
 
       - name: Install protoc
         run: |
-          PROTOC_VERSION=25.1
+          PROTOC_VERSION=32.0
           wget -q https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip
           unzip -q protoc-${PROTOC_VERSION}-linux-x86_64.zip -d $HOME/.local
           echo "$HOME/.local/bin" >> $GITHUB_PATH
@@ -167,12 +179,12 @@ jobs:
       - name: Check for uncommitted proto changes
         run: |
           if [ -n "$(git status --porcelain proto/)" ]; then
-            echo "L Proto files have uncommitted changes"
+            echo "❌ Proto files have uncommitted changes"
             echo "Please run: bash scripts/generate-proto.sh"
             git diff proto/
             exit 1
           fi
-          echo " Proto files are up to date"
+          echo "✅ Proto files are up to date"
 
   # OpenAPI schema validation
   openapi:
@@ -183,17 +195,17 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
 
-      - name: Install openapi-typescript
-        run: npm install -g openapi-typescript
+      - name: Install pnpm
+        run: corepack enable
 
       - name: Validate OpenAPI schema (TypeScript)
         run: |
-          openapi-typescript api/openapi/user.yaml --output /tmp/user.ts
-          echo " OpenAPI schema is valid for TypeScript generation"
+          pnpm dlx openapi-typescript api/openapi/user.yaml --output /tmp/user.ts
+          echo "✅ OpenAPI schema is valid for TypeScript generation"
 
       - name: Set up Go
         uses: actions/setup-go@v5
@@ -209,18 +221,18 @@ jobs:
       - name: Check for uncommitted OpenAPI changes
         run: |
           if [ -n "$(git status --porcelain services/gateway/internal/api/)" ]; then
-            echo "L OpenAPI generated files have uncommitted changes"
-            echo "Please run: npm run codegen:go"
+            echo "❌ OpenAPI generated files have uncommitted changes"
+            echo "Please run: pnpm run codegen:go"
             git diff services/gateway/internal/api/
             exit 1
           fi
-          echo " OpenAPI generated files are up to date"
+          echo "✅ OpenAPI generated files are up to date"
 
   # Bazel build test (experimental - allowed to fail)
   bazel:
     name: Bazel Build (experimental)
     runs-on: ubuntu-latest
-    continue-on-error: true  # 1WWf�CIo�
+    continue-on-error: true  # Allow this job to fail without failing the entire CI
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -243,14 +255,14 @@ jobs:
 
           # Try to build a simple target
           bazel build //proto/... || {
-            echo "�  Bazel build failed (expected - configuration WIP)"
+            echo "⚠️  Bazel build failed (expected - configuration WIP)"
             echo "See BAZEL-BUILD-INSTRUCTIONS.md for current status"
             exit 0
           }
 
-          echo " Bazel build succeeded!"
+          echo "✅ Bazel build succeeded!"
 
-  # Summary job - ����n��ï
+  # Summary job - all required jobs must pass
   ci-success:
     name: CI Success
     runs-on: ubuntu-latest
@@ -259,7 +271,7 @@ jobs:
       - frontend
       - proto
       - openapi
-      # bazel o+�jDexperimental	
+      # bazel is excluded (experimental)
     if: always()
     steps:
       - name: Check all required jobs
@@ -274,7 +286,7 @@ jobs:
              [ "${{ needs.frontend.result }}" != "success" ] || \
              [ "${{ needs.proto.result }}" != "success" ] || \
              [ "${{ needs.openapi.result }}" != "success" ]; then
-            echo "L Some CI jobs failed"
+            echo "❌ Some CI jobs failed"
             exit 1
           fi
-          echo " All required CI jobs passed successfully!"
+          echo "✅ All required CI jobs passed successfully!"

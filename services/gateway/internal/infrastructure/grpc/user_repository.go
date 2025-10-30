@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/Riku-KANO/kube-ec/services/gateway/internal/domain/user"
 	userpb "github.com/Riku-KANO/kube-ec/proto/user"
+	"github.com/Riku-KANO/kube-ec/services/gateway/internal/domain/user"
 )
 
 const (
@@ -106,4 +106,3 @@ func toDomainUser(pbUser *userpb.User) (*user.User, error) {
 		timestampToTime(pbUser.UpdatedAt),
 	), nil
 }
-

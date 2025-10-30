@@ -3,10 +3,10 @@ package handler
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin"
+	api "github.com/Riku-KANO/kube-ec/services/gateway/internal/api"
 	appuser "github.com/Riku-KANO/kube-ec/services/gateway/internal/application/user"
 	"github.com/Riku-KANO/kube-ec/services/gateway/internal/domain/errors"
-	api "github.com/Riku-KANO/kube-ec/services/gateway/internal/api"
+	"github.com/gin-gonic/gin"
 )
 
 // UserHandler handles HTTP requests for user operations

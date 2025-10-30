@@ -1,0 +1,77 @@
+name: Auto Format
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  auto-format:
+    name: Auto Format Code
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip-format]')"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
+      - name: Install pnpm
+        run: corepack enable
+
+      - name: Install protoc
+        run: |
+          PROTOC_VERSION=32.0
+          wget -q https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip
+          unzip -q protoc-${PROTOC_VERSION}-linux-x86_64.zip -d $HOME/.local
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Install protoc-gen-go plugins
+        run: |
+          go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+
+      - name: Format Go code
+        run: |
+          for service in auth gateway user product order payment; do
+            echo "Formatting $service..."
+            gofmt -w services/$service
+          done
+
+      - name: Regenerate proto files
+        run: bash scripts/generate-proto.sh
+
+      - name: Format frontend code
+        working-directory: web
+        run: |
+          pnpm install --frozen-lockfile || pnpm install
+          pnpm exec openapi-typescript ../api/openapi/user.yaml -o src/types/api/user.ts
+          pnpm run format || true
+
+      - name: Check for changes
+        id: verify-diff
+        run: |
+          git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and push if changed
+        if: steps.verify-diff.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "chore: Auto-format code [skip-ci] [skip-format]"
+          git push

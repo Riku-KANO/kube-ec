@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/lib/pq"
 	pkgerrors "github.com/Riku-KANO/kube-ec/pkg/errors"
 	"github.com/Riku-KANO/kube-ec/services/auth/internal/domain/auth"
+	"github.com/lib/pq"
 )
 
 const (

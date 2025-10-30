@@ -32,12 +32,12 @@ func NewUser(
 }
 
 // Getters
-func (u *User) ID() string               { return u.id }
-func (u *User) Email() Email             { return u.email }
-func (u *User) Name() string             { return u.name }
+func (u *User) ID() string                { return u.id }
+func (u *User) Email() Email              { return u.email }
+func (u *User) Name() string              { return u.name }
 func (u *User) PhoneNumber() *PhoneNumber { return u.phoneNumber }
-func (u *User) CreatedAt() time.Time     { return u.createdAt }
-func (u *User) UpdatedAt() time.Time     { return u.updatedAt }
+func (u *User) CreatedAt() time.Time      { return u.createdAt }
+func (u *User) UpdatedAt() time.Time      { return u.updatedAt }
 
 // UpdateProfile updates user profile information
 func (u *User) UpdateProfile(name string, phoneNumber *PhoneNumber) {

@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	pb "github.com/Riku-KANO/kube-ec/proto/user"
 	commonpb "github.com/Riku-KANO/kube-ec/proto/common"
+	pb "github.com/Riku-KANO/kube-ec/proto/user"
 )
 
 type UserRepository struct {

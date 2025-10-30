@@ -3,9 +3,9 @@ package grpc
 import (
 	"context"
 
+	pkgerrors "github.com/Riku-KANO/kube-ec/pkg/errors"
 	authpb "github.com/Riku-KANO/kube-ec/proto/auth"
 	commonpb "github.com/Riku-KANO/kube-ec/proto/common"
-	pkgerrors "github.com/Riku-KANO/kube-ec/pkg/errors"
 	appauth "github.com/Riku-KANO/kube-ec/services/auth/internal/application/auth"
 )
 
