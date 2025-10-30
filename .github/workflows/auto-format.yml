@@ -59,6 +59,7 @@ jobs:
         working-directory: web
         run: |
           pnpm install --frozen-lockfile || pnpm install
+          pnpm exec openapi-typescript ../api/openapi/user.yaml -o src/types/api/user.ts
           pnpm run format || true
 
       - name: Check for changes

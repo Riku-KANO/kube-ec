@@ -55,7 +55,7 @@ jobs:
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
-          version: v2.6.0
+          version: v7
           working-directory: services/${{ matrix.service }}
           args: --timeout=5m
 
@@ -121,6 +121,9 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Generate TypeScript types from OpenAPI
+        run: pnpm exec openapi-typescript ../api/openapi/user.yaml -o src/types/api/user.ts
 
       - name: Check Prettier formatting
         run: |
