@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/google/uuid"
 	commonpb "github.com/Riku-KANO/kube-ec/proto/common"
 	pb "github.com/Riku-KANO/kube-ec/proto/product"
+	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

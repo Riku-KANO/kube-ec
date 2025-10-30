@@ -7,8 +7,8 @@ import (
 	"net"
 	"os"
 
-	_ "github.com/lib/pq"
 	pb "github.com/Riku-KANO/kube-ec/proto/payment"
+	_ "github.com/lib/pq"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
