@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	commonpb "github.com/yourusername/kube-ec/proto/common"
-	pb "github.com/yourusername/kube-ec/proto/product"
+	commonpb "github.com/Riku-KANO/kube-ec/proto/common"
+	pb "github.com/Riku-KANO/kube-ec/proto/product"
 )
 
 type ProductRepository struct {

@@ -5,8 +5,8 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
-	commonpb "github.com/yourusername/kube-ec/proto/common"
-	pb "github.com/yourusername/kube-ec/proto/order"
+	commonpb "github.com/Riku-KANO/kube-ec/proto/common"
+	pb "github.com/Riku-KANO/kube-ec/proto/order"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
