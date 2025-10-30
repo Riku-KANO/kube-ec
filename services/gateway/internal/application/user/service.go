@@ -34,7 +34,7 @@ func (s *Service) Register(ctx context.Context, input RegisterInput) (AuthOutput
 	}
 
 	// Validate password (auth service will handle hashing)
-	password, err := user.NewPassword(input.Password)
+	_, err = user.NewPassword(input.Password)
 	if err != nil {
 		return AuthOutput{}, errors.ErrInvalidInput
 	}

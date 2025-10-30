@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: kube-ec-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: kube_ec
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: services/auth/Dockerfile
+    container_name: kube-ec-auth
+    environment:
+      GRPC_PORT: "50052"
+      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/kube_ec?sslmode=disable"
+      JWT_SECRET: "your-secret-key-change-in-production"
+    ports:
+      - "50052:50052"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  user-service:
+    build:
+      context: .
+      dockerfile: services/user/Dockerfile
+    container_name: kube-ec-user
+    environment:
+      GRPC_PORT: "50051"
+      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/kube_ec?sslmode=disable"
+    ports:
+      - "50051:50051"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  gateway:
+    build:
+      context: .
+      dockerfile: services/gateway/Dockerfile
+    container_name: kube-ec-gateway
+    environment:
+      PORT: "8080"
+      GIN_MODE: "debug"
+      AUTH_SERVICE_ADDR: "auth-service:50052"
+      USER_SERVICE_ADDR: "user-service:50051"
+      PRODUCT_SERVICE_ADDR: "product-service:50051"
+      ORDER_SERVICE_ADDR: "order-service:50051"
+      PAYMENT_SERVICE_ADDR: "payment-service:50051"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - auth-service
+      - user-service
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
