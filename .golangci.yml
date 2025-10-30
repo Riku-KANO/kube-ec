@@ -46,17 +46,17 @@ linters-settings:
 
 issues:
   exclude-rules:
-    - path: _test\.go
+    - path: '_test\.go'
       linters:
         - errcheck
         - gosec
         - noctx
 
-    - path: ".*\.gen\.go"
+    - path: '.*\.gen\.go'
       linters:
         - all
 
-    - path: "proto/.*\.pb\.go"
+    - path: 'proto/.*\.pb\.go'
       linters:
         - all
 
