@@ -1,8 +1,8 @@
 package handler
 
 import (
-	appuser "github.com/Riku-KANO/kube-ec/services/gateway/internal/application/user"
 	api "github.com/Riku-KANO/kube-ec/services/gateway/internal/api"
+	appuser "github.com/Riku-KANO/kube-ec/services/gateway/internal/application/user"
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 

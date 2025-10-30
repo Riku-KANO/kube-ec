@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	pb "github.com/yourusername/kube-ec/proto/product"
 	commonpb "github.com/yourusername/kube-ec/proto/common"
+	pb "github.com/yourusername/kube-ec/proto/product"
 )
 
 type ProductRepository struct {
@@ -47,7 +47,7 @@ func (r *ProductRepository) GetByID(ctx context.Context, id string) (*pb.Product
 		WHERE id = $1
 	`
 	product := &pb.Product{
-		Price: &commonpb.Money{},
+		Price:     &commonpb.Money{},
 		CreatedAt: &commonpb.Timestamp{},
 		UpdatedAt: &commonpb.Timestamp{},
 	}

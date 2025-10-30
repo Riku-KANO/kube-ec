@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"time"
 
-	pb "github.com/yourusername/kube-ec/proto/order"
 	commonpb "github.com/yourusername/kube-ec/proto/common"
+	pb "github.com/yourusername/kube-ec/proto/order"
 )
 
 type OrderRepository struct {

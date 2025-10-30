@@ -1,9 +1,9 @@
 package http
 
 import (
-	"github.com/gin-gonic/gin"
 	openapi "github.com/Riku-KANO/kube-ec/services/gateway/internal/api"
 	"github.com/Riku-KANO/kube-ec/services/gateway/internal/presentation/http/handler"
+	"github.com/gin-gonic/gin"
 )
 
 // SetupRouter configures HTTP routes

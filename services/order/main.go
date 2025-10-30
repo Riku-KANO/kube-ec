@@ -7,8 +7,8 @@ import (
 	"net"
 	"os"
 
-	pb "github.com/yourusername/kube-ec/proto/order"
 	_ "github.com/lib/pq"
+	pb "github.com/yourusername/kube-ec/proto/order"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
