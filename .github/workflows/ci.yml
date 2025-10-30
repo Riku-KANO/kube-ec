@@ -40,13 +40,13 @@ jobs:
         run: |
           unformatted=$(gofmt -l .)
           if [ -n "$unformatted" ]; then
-            echo "L The following files are not formatted:"
+            echo "❌ The following files are not formatted:"
             echo "$unformatted"
             echo ""
             echo "Please run: gofmt -w services/${{ matrix.service }}"
             exit 1
           fi
-          echo " All Go files are properly formatted"
+          echo "✅ All Go files are properly formatted"
 
       - name: Run go vet
         working-directory: services/${{ matrix.service }}
@@ -116,11 +116,11 @@ jobs:
       - name: Check Prettier formatting
         run: |
           npm run format:check || {
-            echo "L Code is not formatted"
+            echo "❌ Code is not formatted"
             echo "Please run: cd web && npm run format"
             exit 1
           }
-          echo " All files are properly formatted"
+          echo "✅ All files are properly formatted"
 
       - name: Run ESLint
         run: npm run lint
@@ -167,12 +167,12 @@ jobs:
       - name: Check for uncommitted proto changes
         run: |
           if [ -n "$(git status --porcelain proto/)" ]; then
-            echo "L Proto files have uncommitted changes"
+            echo "❌ Proto files have uncommitted changes"
             echo "Please run: bash scripts/generate-proto.sh"
             git diff proto/
             exit 1
           fi
-          echo " Proto files are up to date"
+          echo "✅ Proto files are up to date"
 
   # OpenAPI schema validation
   openapi:
@@ -193,7 +193,7 @@ jobs:
       - name: Validate OpenAPI schema (TypeScript)
         run: |
           openapi-typescript api/openapi/user.yaml --output /tmp/user.ts
-          echo " OpenAPI schema is valid for TypeScript generation"
+          echo "✅ OpenAPI schema is valid for TypeScript generation"
 
       - name: Set up Go
         uses: actions/setup-go@v5
@@ -209,18 +209,18 @@ jobs:
       - name: Check for uncommitted OpenAPI changes
         run: |
           if [ -n "$(git status --porcelain services/gateway/internal/api/)" ]; then
-            echo "L OpenAPI generated files have uncommitted changes"
+            echo "❌ OpenAPI generated files have uncommitted changes"
             echo "Please run: npm run codegen:go"
             git diff services/gateway/internal/api/
             exit 1
           fi
-          echo " OpenAPI generated files are up to date"
+          echo "✅ OpenAPI generated files are up to date"
 
   # Bazel build test (experimental - allowed to fail)
   bazel:
     name: Bazel Build (experimental)
     runs-on: ubuntu-latest
-    continue-on-error: true  # 1WWf�CIo�
+    continue-on-error: true  # Allow this job to fail without failing the entire CI
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -243,14 +243,14 @@ jobs:
 
           # Try to build a simple target
           bazel build //proto/... || {
-            echo "�  Bazel build failed (expected - configuration WIP)"
+            echo "⚠️  Bazel build failed (expected - configuration WIP)"
             echo "See BAZEL-BUILD-INSTRUCTIONS.md for current status"
             exit 0
           }
 
-          echo " Bazel build succeeded!"
+          echo "✅ Bazel build succeeded!"
 
-  # Summary job - ����n��ï
+  # Summary job - all required jobs must pass
   ci-success:
     name: CI Success
     runs-on: ubuntu-latest
@@ -259,7 +259,7 @@ jobs:
       - frontend
       - proto
       - openapi
-      # bazel o+�jDexperimental	
+      # bazel is excluded (experimental)
     if: always()
     steps:
       - name: Check all required jobs
@@ -274,7 +274,7 @@ jobs:
              [ "${{ needs.frontend.result }}" != "success" ] || \
              [ "${{ needs.proto.result }}" != "success" ] || \
              [ "${{ needs.openapi.result }}" != "success" ]; then
-            echo "L Some CI jobs failed"
+            echo "❌ Some CI jobs failed"
             exit 1
           fi
-          echo " All required CI jobs passed successfully!"
+          echo "✅ All required CI jobs passed successfully!"
