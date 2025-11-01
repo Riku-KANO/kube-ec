@@ -9,43 +9,42 @@ cd "$(dirname "$0")/.."
 # Generate common proto
 echo "Generating common proto..."
 protoc --go_out=. --go_opt=paths=source_relative \
-  --go-grpc_out=. --go-grpc_opt=paths=source_relative \
   --proto_path=. \
-  proto/common/common.proto
+  pkg/proto/common/common.proto
 
 # Generate auth proto
 echo "Generating auth proto..."
 protoc --go_out=. --go_opt=paths=source_relative \
   --go-grpc_out=. --go-grpc_opt=paths=source_relative \
   --proto_path=. \
-  proto/auth/auth.proto
+  services/auth/proto/auth.proto
 
 # Generate user proto
 echo "Generating user proto..."
 protoc --go_out=. --go_opt=paths=source_relative \
   --go-grpc_out=. --go-grpc_opt=paths=source_relative \
   --proto_path=. \
-  proto/user/user.proto
+  services/user/proto/user.proto
 
 # Generate product proto
 echo "Generating product proto..."
 protoc --go_out=. --go_opt=paths=source_relative \
   --go-grpc_out=. --go-grpc_opt=paths=source_relative \
   --proto_path=. \
-  proto/product/product.proto
+  services/product/proto/product.proto
 
 # Generate order proto
 echo "Generating order proto..."
 protoc --go_out=. --go_opt=paths=source_relative \
   --go-grpc_out=. --go-grpc_opt=paths=source_relative \
   --proto_path=. \
-  proto/order/order.proto
+  services/order/proto/order.proto
 
 # Generate payment proto
 echo "Generating payment proto..."
 protoc --go_out=. --go_opt=paths=source_relative \
   --go-grpc_out=. --go-grpc_opt=paths=source_relative \
   --proto_path=. \
-  proto/payment/payment.proto
+  services/payment/proto/payment.proto
 
 echo "Proto generation completed successfully!"

@@ -2,9 +2,9 @@ syntax = "proto3";
 
 package user;
 
-import "proto/common/common.proto";
+import "pkg/proto/common/common.proto";
 
-option go_package = "github.com/Riku-KANO/kube-ec/proto/user";
+option go_package = "github.com/Riku-KANO/kube-ec/services/user/proto";
 
 service UserService {
   // User management operations (authentication moved to AuthService)

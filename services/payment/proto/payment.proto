@@ -2,9 +2,9 @@ syntax = "proto3";
 
 package payment;
 
-import "proto/common/common.proto";
+import "pkg/proto/common/common.proto";
 
-option go_package = "github.com/Riku-KANO/kube-ec/proto/payment";
+option go_package = "github.com/Riku-KANO/kube-ec/services/payment/proto";
 
 service PaymentService {
   rpc CreatePayment(CreatePaymentRequest) returns (Payment);

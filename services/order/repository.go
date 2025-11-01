@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"time"
 
-	commonpb "github.com/Riku-KANO/kube-ec/proto/common"
-	pb "github.com/Riku-KANO/kube-ec/proto/order"
+	commonpb "github.com/Riku-KANO/kube-ec/pkg/proto/common"
+	pb "github.com/Riku-KANO/kube-ec/services/order/proto"
 )
 
 type OrderRepository struct {

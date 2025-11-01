@@ -3,13 +3,13 @@ module github.com/Riku-KANO/kube-ec/services/gateway
 go 1.24.0
 
 require (
-	github.com/Riku-KANO/kube-ec/proto v0.0.0
 	github.com/getkin/kin-openapi v0.132.0
 	github.com/gin-contrib/cors v1.7.2
 	github.com/gin-gonic/gin v1.10.0
 	github.com/oapi-codegen/runtime v1.1.1
 	golang.org/x/crypto v0.43.0
 	google.golang.org/grpc v1.76.0
+	google.golang.org/protobuf v1.36.6
 )
 
 require (
@@ -50,5 +50,3 @@ require (
 	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-replace github.com/Riku-KANO/kube-ec/proto => ../../proto

@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	authpb "github.com/Riku-KANO/kube-ec/proto/auth"
+	authpb "github.com/Riku-KANO/kube-ec/services/auth/proto"
 	_ "github.com/lib/pq"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"

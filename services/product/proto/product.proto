@@ -2,9 +2,9 @@ syntax = "proto3";
 
 package product;
 
-import "proto/common/common.proto";
+import "pkg/proto/common/common.proto";
 
-option go_package = "github.com/Riku-KANO/kube-ec/proto/product";
+option go_package = "github.com/Riku-KANO/kube-ec/services/product/proto";
 
 service ProductService {
   rpc CreateProduct(CreateProductRequest) returns (Product);
