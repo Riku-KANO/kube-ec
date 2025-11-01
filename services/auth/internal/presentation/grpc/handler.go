@@ -4,9 +4,9 @@ import (
 	"context"
 
 	pkgerrors "github.com/Riku-KANO/kube-ec/pkg/errors"
-	authpb "github.com/Riku-KANO/kube-ec/services/auth/proto"
 	commonpb "github.com/Riku-KANO/kube-ec/pkg/proto/common"
 	appauth "github.com/Riku-KANO/kube-ec/services/auth/internal/application/auth"
+	authpb "github.com/Riku-KANO/kube-ec/services/auth/proto"
 )
 
 // AuthHandler implements the gRPC AuthService

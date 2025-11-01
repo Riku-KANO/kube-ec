@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	userpb "github.com/Riku-KANO/kube-ec/services/user/proto"
 	"github.com/Riku-KANO/kube-ec/services/gateway/internal/domain/user"
+	userpb "github.com/Riku-KANO/kube-ec/services/user/proto"
 )
 
 const (
