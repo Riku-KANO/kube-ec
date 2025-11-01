@@ -7,7 +7,7 @@ import (
 	"net"
 	"os"
 
-	pb "github.com/Riku-KANO/kube-ec/proto/order"
+	pb "github.com/Riku-KANO/kube-ec/services/order/proto"
 	_ "github.com/lib/pq"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"

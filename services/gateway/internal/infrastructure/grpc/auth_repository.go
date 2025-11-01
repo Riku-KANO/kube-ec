@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	authpb "github.com/Riku-KANO/kube-ec/proto/auth"
+	authpb "github.com/Riku-KANO/kube-ec/services/auth/proto"
 	"github.com/Riku-KANO/kube-ec/services/gateway/internal/domain/user"
 )
 

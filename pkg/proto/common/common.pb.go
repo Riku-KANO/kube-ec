@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.10
 // 	protoc        v6.32.0
-// source: proto/common/common.proto
+// source: pkg/proto/common/common.proto
 
 package common
 
@@ -31,7 +31,7 @@ type Money struct {
 
 func (x *Money) Reset() {
 	*x = Money{}
-	mi := &file_proto_common_common_proto_msgTypes[0]
+	mi := &file_pkg_proto_common_common_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -43,7 +43,7 @@ func (x *Money) String() string {
 func (*Money) ProtoMessage() {}
 
 func (x *Money) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_common_common_proto_msgTypes[0]
+	mi := &file_pkg_proto_common_common_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -56,7 +56,7 @@ func (x *Money) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Money.ProtoReflect.Descriptor instead.
 func (*Money) Descriptor() ([]byte, []int) {
-	return file_proto_common_common_proto_rawDescGZIP(), []int{0}
+	return file_pkg_proto_common_common_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Money) GetCurrency() string {
@@ -83,7 +83,7 @@ type Timestamp struct {
 
 func (x *Timestamp) Reset() {
 	*x = Timestamp{}
-	mi := &file_proto_common_common_proto_msgTypes[1]
+	mi := &file_pkg_proto_common_common_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -95,7 +95,7 @@ func (x *Timestamp) String() string {
 func (*Timestamp) ProtoMessage() {}
 
 func (x *Timestamp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_common_common_proto_msgTypes[1]
+	mi := &file_pkg_proto_common_common_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -108,7 +108,7 @@ func (x *Timestamp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Timestamp.ProtoReflect.Descriptor instead.
 func (*Timestamp) Descriptor() ([]byte, []int) {
-	return file_proto_common_common_proto_rawDescGZIP(), []int{1}
+	return file_pkg_proto_common_common_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *Timestamp) GetSeconds() int64 {
@@ -139,7 +139,7 @@ type Address struct {
 
 func (x *Address) Reset() {
 	*x = Address{}
-	mi := &file_proto_common_common_proto_msgTypes[2]
+	mi := &file_pkg_proto_common_common_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -151,7 +151,7 @@ func (x *Address) String() string {
 func (*Address) ProtoMessage() {}
 
 func (x *Address) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_common_common_proto_msgTypes[2]
+	mi := &file_pkg_proto_common_common_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -164,7 +164,7 @@ func (x *Address) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Address.ProtoReflect.Descriptor instead.
 func (*Address) Descriptor() ([]byte, []int) {
-	return file_proto_common_common_proto_rawDescGZIP(), []int{2}
+	return file_pkg_proto_common_common_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *Address) GetPostalCode() string {
@@ -219,7 +219,7 @@ type Pagination struct {
 
 func (x *Pagination) Reset() {
 	*x = Pagination{}
-	mi := &file_proto_common_common_proto_msgTypes[3]
+	mi := &file_pkg_proto_common_common_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -231,7 +231,7 @@ func (x *Pagination) String() string {
 func (*Pagination) ProtoMessage() {}
 
 func (x *Pagination) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_common_common_proto_msgTypes[3]
+	mi := &file_pkg_proto_common_common_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -244,7 +244,7 @@ func (x *Pagination) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Pagination.ProtoReflect.Descriptor instead.
 func (*Pagination) Descriptor() ([]byte, []int) {
-	return file_proto_common_common_proto_rawDescGZIP(), []int{3}
+	return file_pkg_proto_common_common_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *Pagination) GetPage() int32 {
@@ -272,7 +272,7 @@ type PaginationResponse struct {
 
 func (x *PaginationResponse) Reset() {
 	*x = PaginationResponse{}
-	mi := &file_proto_common_common_proto_msgTypes[4]
+	mi := &file_pkg_proto_common_common_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -284,7 +284,7 @@ func (x *PaginationResponse) String() string {
 func (*PaginationResponse) ProtoMessage() {}
 
 func (x *PaginationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_common_common_proto_msgTypes[4]
+	mi := &file_pkg_proto_common_common_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -297,7 +297,7 @@ func (x *PaginationResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PaginationResponse.ProtoReflect.Descriptor instead.
 func (*PaginationResponse) Descriptor() ([]byte, []int) {
-	return file_proto_common_common_proto_rawDescGZIP(), []int{4}
+	return file_pkg_proto_common_common_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *PaginationResponse) GetTotalCount() int32 {
@@ -321,11 +321,11 @@ func (x *PaginationResponse) GetCurrentPage() int32 {
 	return 0
 }
 
-var File_proto_common_common_proto protoreflect.FileDescriptor
+var File_pkg_proto_common_common_proto protoreflect.FileDescriptor
 
-const file_proto_common_common_proto_rawDesc = "" +
+const file_pkg_proto_common_common_proto_rawDesc = "" +
 	"\n" +
-	"\x19proto/common/common.proto\x12\x06common\";\n" +
+	"\x1dpkg/proto/common/common.proto\x12\x06common\";\n" +
 	"\x05Money\x12\x1a\n" +
 	"\bcurrency\x18\x01 \x01(\tR\bcurrency\x12\x16\n" +
 	"\x06amount\x18\x02 \x01(\x03R\x06amount\";\n" +
@@ -351,29 +351,29 @@ const file_proto_common_common_proto_rawDesc = "" +
 	"totalCount\x12\x1f\n" +
 	"\vtotal_pages\x18\x02 \x01(\x05R\n" +
 	"totalPages\x12!\n" +
-	"\fcurrent_page\x18\x03 \x01(\x05R\vcurrentPageB+Z)github.com/Riku-KANO/kube-ec/proto/commonb\x06proto3"
+	"\fcurrent_page\x18\x03 \x01(\x05R\vcurrentPageB/Z-github.com/Riku-KANO/kube-ec/pkg/proto/commonb\x06proto3"
 
 var (
-	file_proto_common_common_proto_rawDescOnce sync.Once
-	file_proto_common_common_proto_rawDescData []byte
+	file_pkg_proto_common_common_proto_rawDescOnce sync.Once
+	file_pkg_proto_common_common_proto_rawDescData []byte
 )
 
-func file_proto_common_common_proto_rawDescGZIP() []byte {
-	file_proto_common_common_proto_rawDescOnce.Do(func() {
-		file_proto_common_common_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_proto_common_common_proto_rawDesc), len(file_proto_common_common_proto_rawDesc)))
+func file_pkg_proto_common_common_proto_rawDescGZIP() []byte {
+	file_pkg_proto_common_common_proto_rawDescOnce.Do(func() {
+		file_pkg_proto_common_common_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_pkg_proto_common_common_proto_rawDesc), len(file_pkg_proto_common_common_proto_rawDesc)))
 	})
-	return file_proto_common_common_proto_rawDescData
+	return file_pkg_proto_common_common_proto_rawDescData
 }
 
-var file_proto_common_common_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
-var file_proto_common_common_proto_goTypes = []any{
+var file_pkg_proto_common_common_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_pkg_proto_common_common_proto_goTypes = []any{
 	(*Money)(nil),              // 0: common.Money
 	(*Timestamp)(nil),          // 1: common.Timestamp
 	(*Address)(nil),            // 2: common.Address
 	(*Pagination)(nil),         // 3: common.Pagination
 	(*PaginationResponse)(nil), // 4: common.PaginationResponse
 }
-var file_proto_common_common_proto_depIdxs = []int32{
+var file_pkg_proto_common_common_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -381,26 +381,26 @@ var file_proto_common_common_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_proto_common_common_proto_init() }
-func file_proto_common_common_proto_init() {
-	if File_proto_common_common_proto != nil {
+func init() { file_pkg_proto_common_common_proto_init() }
+func file_pkg_proto_common_common_proto_init() {
+	if File_pkg_proto_common_common_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_common_common_proto_rawDesc), len(file_proto_common_common_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_pkg_proto_common_common_proto_rawDesc), len(file_pkg_proto_common_common_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_proto_common_common_proto_goTypes,
-		DependencyIndexes: file_proto_common_common_proto_depIdxs,
-		MessageInfos:      file_proto_common_common_proto_msgTypes,
+		GoTypes:           file_pkg_proto_common_common_proto_goTypes,
+		DependencyIndexes: file_pkg_proto_common_common_proto_depIdxs,
+		MessageInfos:      file_pkg_proto_common_common_proto_msgTypes,
 	}.Build()
-	File_proto_common_common_proto = out.File
-	file_proto_common_common_proto_goTypes = nil
-	file_proto_common_common_proto_depIdxs = nil
+	File_pkg_proto_common_common_proto = out.File
+	file_pkg_proto_common_common_proto_goTypes = nil
+	file_pkg_proto_common_common_proto_depIdxs = nil
 }

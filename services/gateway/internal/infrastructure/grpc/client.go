@@ -6,8 +6,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	authpb "github.com/Riku-KANO/kube-ec/proto/auth"
-	userpb "github.com/Riku-KANO/kube-ec/proto/user"
+	authpb "github.com/Riku-KANO/kube-ec/services/auth/proto"
+	userpb "github.com/Riku-KANO/kube-ec/services/user/proto"
 )
 
 // ClientConfig holds gRPC client configuration

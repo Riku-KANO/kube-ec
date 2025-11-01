@@ -2,9 +2,9 @@ syntax = "proto3";
 
 package auth;
 
-import "proto/common/common.proto";
+import "pkg/proto/common/common.proto";
 
-option go_package = "github.com/Riku-KANO/kube-ec/proto/auth";
+option go_package = "github.com/Riku-KANO/kube-ec/services/auth/proto";
 
 // AuthService handles all authentication operations
 // Designed to support multiple authentication methods in the future (OAuth, SAML, MFA, etc.)

@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	commonpb "github.com/Riku-KANO/kube-ec/proto/common"
-	pb "github.com/Riku-KANO/kube-ec/proto/order"
+	commonpb "github.com/Riku-KANO/kube-ec/pkg/proto/common"
+	pb "github.com/Riku-KANO/kube-ec/services/order/proto"
 	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

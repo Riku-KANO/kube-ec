@@ -2,9 +2,9 @@ syntax = "proto3";
 
 package order;
 
-import "proto/common/common.proto";
+import "pkg/proto/common/common.proto";
 
-option go_package = "github.com/Riku-KANO/kube-ec/proto/order";
+option go_package = "github.com/Riku-KANO/kube-ec/services/order/proto";
 
 service OrderService {
   rpc CreateOrder(CreateOrderRequest) returns (Order);

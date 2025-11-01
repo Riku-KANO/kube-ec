@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	pb "github.com/Riku-KANO/kube-ec/proto/payment"
+	pb "github.com/Riku-KANO/kube-ec/services/payment/proto"
 	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
